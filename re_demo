@@ -1,0 +1,172 @@
+re
+
+
+re.findall('ab',"abcdefabcd")
+Out: ['ab', 'ab']
+
+re.findall('com|cn',"www.baidu.com/www.tmooc.cn")
+Out: ['com', 'cn']
+
+In : re.findall('张.丰',"张三丰,张四丰,张五丰")
+Out: ['张三丰', '张四丰', '张五丰']
+
+[abc#!好] 表示 [] 中的任意一个字符
+[0-9],[a-z],[A-Z] 表示区间内的任意一个字符
+[_#?0-9a-z]  混合书写，一般区间表达写在后面
+
+
+In : re.findall('[aeiou]',"How are you!")
+Out: ['o', 'a', 'e', 'o', 'u']
+
+In : re.findall('[^0-9]',"Use 007 port")
+Out: ['U', 's', 'e', ' ', ' ', 'p', 'o', 'r', 't']
+
+
+In : re.findall('^Jame',"Jame,hello")
+Out: ['Jame']
+
+
+e.g.
+In : re.findall('Jame$',"Hi,Jame")
+Out: ['Jame']
+
+In : re.findall('wo*',"wooooo~~w!")
+Out: ['wooooo', 'w']
+
+In : re.findall('[A-Z][a-z]+',"Hello World")
+Out: ['Hello', 'World']
+
+In [28]: re.findall('-?[0-9]+',"Jame,age:18, -26")
+Out[28]: ['18', '-26']
+
+
+In : re.findall('1[0-9]{10}',"Jame:13886495728")
+Out: ['13886495728']
+
+In : re.findall('[1-9][0-9]{5,10}',"Baron:1259296994")
+Out: ['1259296994']
+
+- 元字符： \d   \D
+- 匹配规则：\d 匹配任意数字字符，\D 匹配任意非数字字符
+
+- 元字符：{m,n}
+- 匹配规则： 匹配前面的字符出现m-n次
+
+- 元字符：{n}
+- 匹配规则： 匹配前面的字符出现n次
+
+- 元字符：?
+- 匹配规则： 匹配前面的字符出现0次或1次
+
+
+#### 匹配任意（非）普通字符
+- 元字符： \w   \W
+- 匹配规则: \w 匹配普通字符，\W 匹配非普通字符
+- 说明: 普通字符指数字，字母，下划线，汉字。
+
+
+#### 匹配任意（非）空字符
+- 元字符： \s   \S
+- 匹配规则: \s 匹配空字符，\S 匹配非空字符
+- 说明：空字符指 空格 \r \n \t \v \f 字符
+
+
+#### 匹配开头结尾位置
+- 元字符： \A   \Z
+- 匹配规则： \A 表示开头位置，\Z 表示结尾位置
+
+
+#### 匹配（非）单词的边界位置
+- 元字符： \b   \B
+- 匹配规则： \b 表示单词边界，\B 表示非单词边界
+- 说明：单词边界指数字字母(汉字)下划线与其他字符的交界位置。
+
+1. 如果使用正则表达式匹配特殊字符则需要加 \ 表示转义。
+> > 特殊字符: . * + ? ^ $ [] () {} | \
+
+
+> 贪婪模式: 默认情况下，匹配重复的元字符总是尽可能多的向后匹配内容。比如: *  +  ?  {m,n}
+> 非贪婪模式(懒惰模式): 让匹配重复的元字符尽可能少的向后匹配内容。
+
+
+> 在正则表达式中，以()建立正则表达式的内部分组，子组是正则表达式的一部分，可以作为内部整体操作对象。
+2. 作用
+- 可以被作为整体操作，改变元字符的操作对象
+
+
+
+e.g.  改变 +号 重复的对象
+In : re.search(r'(ab)+',"ababababab").group()
+Out: 'ababababab'
+e.g. 改变 |号 操作对象
+In : re.search(r'(王|李)\w{1,3}',"王者荣耀").group()
+Out: '王者荣耀'
+
+
+可以通过编程语言某些接口获取匹配内容中，子组对应的内容部分
+re.search(r'(https|http|ftp|file)://\S+',"https://www.baidu.com").group(1)
+
+
+
+可以给正则表达式的子组起一个名字，表达该子组的意义。这种有名称的子组即为捕获组。
+> 格式：`(?P<name>pattern)
+In : re.search(r'(?P<pig>ab)+',"ababababab").group('pig')
+Out: 'ab'
+
+
+regex = compile(pattern,flags = 0)
+ 功能: 生产正则表达式对象
+ 参数: pattern  正则表达式
+      flags  功能标志位,扩展正则表达式的匹配
+ 返回值: 正则表达式对象
+
+
+ regex.findall(string,pos,endpos)
+ 功能: 根据正则表达式匹配目标字符串内容
+ 参数: string 目标字符串
+      pos 截取目标字符串的开始匹配位置
+      endpos 截取目标字符串的结束匹配位置
+ 返回值: 匹配到的内容列表,如果正则表达式有子组则只能获取到子组对应的内容
+
+
+ re.findall(pattern,string,flags = 0)
+ 功能: 根据正则表达式匹配目标字符串内容
+ 参数: pattern  正则表达式
+      string 目标字符串
+      flags  功能标志位,扩展正则表达式的匹配
+ 返回值: 匹配到的内容列表,如果正则表达式有子组则只能获取到子组对应的内容
+
+
+
+re.split(pattern,string,flags = 0)
+ 功能: 使用正则表达式匹配内容,切割目标字符串
+ 参数: pattern  正则表达式
+      string 目标字符串
+      flags  功能标志位,扩展正则表达式的匹配
+ 返回值: 切割后的内容列表
+
+
+
+
+re.sub(pattern,replace,string,max,flags = 0)
+ 功能: 使用一个字符串替换正则表达式匹配到的内容
+ 参数: pattern  正则表达式
+      replace  替换的字符串
+      string 目标字符串
+      max  最多替换几处,默认替换全部
+      flags  功能标志位,扩展正则表达式的匹配
+ 返回值: 替换后的字符串
+
+
+ re.subn(pattern,replace,string,max,flags = 0)
+ 功能: 使用一个字符串替换正则表达式匹配到的内容
+ 参数: pattern  正则表达式
+      replace  替换的字符串
+      string 目标字符串
+      max  最多替换几处,默认替换全部
+      flags  功能标志位,扩展正则表达式的匹配
+ 返回值: 替换后的字符串和替换了几处
+
+
+
+
