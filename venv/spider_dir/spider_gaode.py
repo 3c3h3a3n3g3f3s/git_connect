@@ -138,5 +138,9 @@ dic = {'suggestion': {'keywords': [], 'cities': []}, 'count': '123', 'infocode':
        'info': 'OK'}
 
 sub_list = dic['pois']
-for item in sub_list[1].keys():
-    print(item,end='  ')
+for item_dic in sub_list:
+    va = []
+    for item in poi_name:
+        val = item_dic[item]
+        va.append(val)
+    print(va)
